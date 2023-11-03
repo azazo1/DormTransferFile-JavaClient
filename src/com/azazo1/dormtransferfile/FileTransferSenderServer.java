@@ -1,3 +1,5 @@
+package com.azazo1.dormtransferfile;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -89,31 +91,32 @@ public class FileTransferSenderServer implements Closeable {
             input = scanner.nextLine();
             file = new File(input);
         } while (!file.isFile() || !file.canRead());
-        SCMConnector scmConnector = new SCMConnector();
-        scmConnector.registerSender(file.getName(), senderPort);
-        scmConnector.readResponseCode();
-        scmConnector.readMsgTypeCode();
-        var connCode = MsgType.RegisterSender.parseMsg(scmConnector.in);
-        System.out.printf("Registered at code: %04d%n", connCode);
-        try (var server = new FileTransferSenderServer(senderPort, file)) {
-            long transferStartTime = System.currentTimeMillis();
-            server.launchSending(((now, total) -> {
-                if (now == 0) {
-                    System.out.println("Client Connected");
-                    scmConnector.close();
-                } else {
-                    double progress = 1.0 * now / total;
-                    int blockLength = 10;
-                    int reached = (int) (blockLength * progress);
-                    int unreached = blockLength - reached;
-                    long speed = (int) (now / (System.currentTimeMillis() - transferStartTime) * 1000);
-                    String progressString = "Transfer Progress: [" + "■".repeat(Math.max(0, reached)) +
-                            "□".repeat(Math.max(0, unreached)) + "] " + FileTransferClient.formatFileSize(speed) + "/s"
-                            + " Remains: " + FileTransferClient.formatFileSize(total - now);
-                    System.out.print("\r" + progressString);
-                }
-            }));
-            System.out.println();
+        try (SCMConnector scmConnector = new SCMConnector()) {
+            scmConnector.registerSender(file.getName(), senderPort);
+            scmConnector.readResponseCode();
+            scmConnector.readMsgTypeCode();
+            var connCode = MsgType.RegisterSender.parseMsg(scmConnector.in);
+            System.out.printf("Registered at code: %04d%n", connCode);
+            try (var server = new FileTransferSenderServer(senderPort, file)) {
+                long transferStartTime = System.currentTimeMillis();
+                server.launchSending(((now, total) -> {
+                    if (now == 0) {
+                        System.out.println("Client Connected");
+                        scmConnector.close();
+                    } else {
+                        double progress = 1.0 * now / total;
+                        int blockLength = 10;
+                        int reached = (int) (blockLength * progress);
+                        int unreached = blockLength - reached;
+                        long speed = (int) (now / (System.currentTimeMillis() - transferStartTime) * 1000);
+                        String progressString = "Transfer Progress: [" + "■".repeat(Math.max(0, reached)) +
+                                "□".repeat(Math.max(0, unreached)) + "] " + FileTransferClient.formatFileSize(speed) + "/s"
+                                + " Remains: " + FileTransferClient.formatFileSize(total - now);
+                        System.out.print("\r" + progressString);
+                    }
+                }));
+                System.out.println();
+            }
         }
         System.out.println("Transfer over");
     }

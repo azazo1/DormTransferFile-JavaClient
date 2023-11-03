@@ -1,3 +1,7 @@
+import com.azazo1.dormtransferfile.FileTransferClient;
+import com.azazo1.dormtransferfile.FileTransferSenderServer;
+import com.azazo1.dormtransferfile.MsgType;
+import com.azazo1.dormtransferfile.SCMConnector;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

@@ -1,3 +1,5 @@
+import com.azazo1.dormtransferfile.MsgType;
+import com.azazo1.dormtransferfile.SCMConnector;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

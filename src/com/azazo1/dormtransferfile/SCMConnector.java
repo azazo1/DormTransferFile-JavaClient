@@ -1,5 +1,8 @@
+package com.azazo1.dormtransferfile;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,7 +10,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-public final class SCMConnector {
+public final class SCMConnector implements Closeable {
     public static final String SCM_IP = "192.168.1.108";
     public static final int SCM_PORT = 8088;
     private final Socket socket;
