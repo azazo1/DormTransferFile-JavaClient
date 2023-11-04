@@ -28,14 +28,14 @@ public final class SCMConnector implements Closeable {
 
     public SCMConnector(int timeout) throws IOException {
         socket = new Socket();
-        socket.setSoTimeout(timeout);
+        socket.setSoTimeout(timeout); // timeout 只影响数据读写而不影响连接
         socket.connect(new InetSocketAddress(SCM_IP, SCM_PORT));
         in = socket.getInputStream();
         out = socket.getOutputStream();
     }
 
     public SCMConnector() throws IOException {
-        this(3000);
+        this(0);
     }
 
     /**
