@@ -35,7 +35,7 @@ public final class SCMConnector implements Closeable {
     }
 
     public SCMConnector() throws IOException {
-        this(3);
+        this(3000);
     }
 
     /**
