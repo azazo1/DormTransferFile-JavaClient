@@ -98,17 +98,18 @@ public class FileTransferSenderServer implements Closeable {
             var connCode = MsgType.RegisterSender.parseMsg(scmConnector.in);
             System.out.printf("Registered at code: %04d%n", connCode);
             try (var server = new FileTransferSenderServer(senderPort, file)) {
-                long transferStartTime = System.currentTimeMillis();
+                SpeedCalculator speedCalculator = new SpeedCalculator();
                 server.launchSending(((now, total) -> {
                     if (now == 0) {
                         System.out.println("Client Connected");
                         scmConnector.close();
                     } else {
+                        speedCalculator.update(now, System.currentTimeMillis());
                         double progress = 1.0 * now / total;
                         int blockLength = 10;
                         int reached = (int) (blockLength * progress);
                         int unreached = blockLength - reached;
-                        long speed = (int) (now / (System.currentTimeMillis() - transferStartTime) * 1000);
+                        long speed = speedCalculator.getSpeed();
                         String progressString = "Transfer Progress: [" + "■".repeat(Math.max(0, reached)) +
                                 "□".repeat(Math.max(0, unreached)) + "] " + FileTransferClient.formatFileSize(speed) + "/s"
                                 + " Remains: " + FileTransferClient.formatFileSize(total - now);

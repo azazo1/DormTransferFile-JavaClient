@@ -125,13 +125,14 @@ public class FileTransferClient implements Closeable {
 
                             File file = new File(filename);
                             System.out.printf("Output file path: %s%n", file.getAbsolutePath());
-                            long transferStartTime = System.currentTimeMillis();
+                            SpeedCalculator speedCalculator = new SpeedCalculator();
                             client.receiveFileData(file, fileSize, ((now, total) -> {
+                                speedCalculator.update(now, System.currentTimeMillis());
                                 double progress = 1.0 * now / total;
                                 int blockLength = 10;
                                 int reached = (int) (blockLength * progress);
                                 int unreached = blockLength - reached;
-                                long speed = (int) (now / (System.currentTimeMillis() - transferStartTime) * 1000);
+                                long speed = speedCalculator.getSpeed();
                                 String progressString = "Transfer Progress: [" + "■".repeat(Math.max(0, reached)) +
                                         "□".repeat(Math.max(0, unreached)) + "] " + formatFileSize(speed) + "/s"
                                         + " Remains: " + formatFileSize(total - now);
