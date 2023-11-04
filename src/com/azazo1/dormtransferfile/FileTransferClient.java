@@ -72,13 +72,13 @@ public class FileTransferClient implements Closeable {
 
     public static String formatFileSize(long sizeInBytes) {
         if (sizeInBytes <= 1024) {
-            return "%d Bytes".formatted(sizeInBytes);
+            return String.format("%d Bytes", sizeInBytes);
         } else if (sizeInBytes <= 1024 * 1024) {
-            return "%.2f KB".formatted(sizeInBytes * 1.0 / 1024);
+            return String.format("%.2f KB", sizeInBytes * 1.0 / 1024);
         } else if (sizeInBytes <= 1024 * 1024 * 1024) {
-            return "%.2f MB".formatted(sizeInBytes * 1.0 / 1024 / 1024);
+            return String.format("%.2f MB", sizeInBytes * 1.0 / 1024 / 1024);
         } else {
-            return "%.2f GB".formatted(sizeInBytes * 1.0 / 1024 / 1024 / 1024);
+            return String.format("%.2f GB", sizeInBytes * 1.0 / 1024 / 1024 / 1024);
         }
     }
 

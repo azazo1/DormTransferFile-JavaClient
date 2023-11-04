@@ -26,16 +26,15 @@ public final class SCMConnector implements Closeable {
         return rst;
     }
 
-    public SCMConnector(int timeout) throws IOException {
+    public SCMConnector(int connectionTimeout) throws IOException {
         socket = new Socket();
-        socket.setSoTimeout(timeout); // timeout 只影响数据读写而不影响连接
-        socket.connect(new InetSocketAddress(SCM_IP, SCM_PORT));
+        socket.connect(new InetSocketAddress(SCM_IP, SCM_PORT), connectionTimeout);
         in = socket.getInputStream();
         out = socket.getOutputStream();
     }
 
     public SCMConnector() throws IOException {
-        this(0);
+        this(1000);
     }
 
     /**
