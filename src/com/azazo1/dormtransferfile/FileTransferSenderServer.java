@@ -31,7 +31,7 @@ public class FileTransferSenderServer implements Closeable {
             callback.callback(0, fileSize); // 用于通知连接建立
 
             byte[] fileNameData = targetFile.getName().getBytes(StandardCharsets.UTF_8);
-            byte[] fileNameSizeData = "%03d".formatted(fileNameData.length).getBytes(StandardCharsets.UTF_8);
+            byte[] fileNameSizeData = String.format("%03d", fileNameData.length).getBytes(StandardCharsets.UTF_8);
             os.write(fileNameSizeData);
             os.write(fileNameData);
 
