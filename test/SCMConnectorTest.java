@@ -11,7 +11,7 @@ class SCMConnectorTest {
 
     @Test
     void fetchAvailableSenders() throws IOException {
-        SCMConnector scm = new SCMConnector();
+        SCMConnector scm = new SCMConnector("192.168.1.200", 1000);
 
         int codeFetching = scm.fetchAvailableSenders();
         int responseCode = scm.readResponseCode();
@@ -25,7 +25,7 @@ class SCMConnectorTest {
 
     @Test
     void registerSender() throws IOException {
-        SCMConnector scm = new SCMConnector();
+        SCMConnector scm = new SCMConnector("192.168.1.200", 1000);
 
         int codeFetching = scm.fetchAvailableSenders();
         int responseCode = scm.readResponseCode();
@@ -59,8 +59,8 @@ class SCMConnectorTest {
 
     @Test
     void querySenderServerAddress() throws IOException {
-        SCMConnector scm = new SCMConnector();
-        SCMConnector scmSenderServer = new SCMConnector();
+        SCMConnector scm = new SCMConnector("192.168.1.200", 1000);
+        SCMConnector scmSenderServer = new SCMConnector("192.168.1.200", 1000);
         int port = 12331;
         String filename = "Hello.py";
         int code = scmSenderServer.registerSender(filename, port);

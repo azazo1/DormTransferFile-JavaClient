@@ -91,7 +91,7 @@ public class FileTransferSenderServer implements Closeable {
             input = scanner.nextLine();
             file = new File(input);
         } while (!file.isFile() || !file.canRead());
-        try (SCMConnector scmConnector = new SCMConnector()) {
+        try (SCMConnector scmConnector = new SCMConnector("192.168.1.200", 1000)) {
             scmConnector.registerSender(file.getName(), senderPort);
             scmConnector.readResponseCode();
             scmConnector.readMsgTypeCode();

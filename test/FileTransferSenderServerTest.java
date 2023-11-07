@@ -34,7 +34,7 @@ class FileTransferSenderServerTest {
     void launchSendingServerSide() throws IOException {
         File fileToTransfer = new File("D:\\Azazo1Files\\Downloaded\\Stable Diffusion整合包.zip");
         int senderPort = 45678;
-        SCMConnector scm1 = new SCMConnector();
+        SCMConnector scm1 = new SCMConnector("192.168.1.200", 1000);
         scm1.registerSender(fileToTransfer.getName(), senderPort);
         scm1.readResponseCode();
         scm1.readMsgTypeCode();
@@ -53,13 +53,13 @@ class FileTransferSenderServerTest {
         File fileToTransfer = new File("D:\\Azazo1Files\\Downloaded\\Stable Diffusion整合包.zip");
         File fileToStore = new File("README_recv.zip");
         int senderPort = 45678;
-        SCMConnector scm1 = new SCMConnector();
+        SCMConnector scm1 = new SCMConnector("192.168.1.200", 1000);
         scm1.registerSender(fileToTransfer.getName(), senderPort);
         scm1.readResponseCode();
         scm1.readMsgTypeCode();
         int connCode = MsgType.RegisterSender.parseMsg(scm1.in);
 
-        SCMConnector scm2 = new SCMConnector();
+        SCMConnector scm2 = new SCMConnector("192.168.1.200", 1000);
         scm2.fetchAvailableSenders();
         scm2.readResponseCode();
         scm2.readMsgTypeCode();

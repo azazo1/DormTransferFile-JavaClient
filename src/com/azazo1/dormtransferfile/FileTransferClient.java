@@ -84,7 +84,7 @@ public class FileTransferClient implements Closeable {
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        try (SCMConnector scmConnector = new SCMConnector()) {
+        try (SCMConnector scmConnector = new SCMConnector("192.168.1.200", 1000)) {
             String input = "";
             while (!input.equals("Q")) {
                 System.out.print("Input your command(Type \"H\" to get help):");

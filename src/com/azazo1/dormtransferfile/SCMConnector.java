@@ -11,9 +11,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public final class SCMConnector implements Closeable {
-    public static final String SCM_IP = "192.168.1.104";
     public static final int SCM_PORT = 8088;
     private final Socket socket;
+    private final String scmIP;
     public final InputStream in;
     public final OutputStream out;
     private int msgSeqCursor = 0;
@@ -26,15 +26,12 @@ public final class SCMConnector implements Closeable {
         return rst;
     }
 
-    public SCMConnector(int connectionTimeout) throws IOException {
+    public SCMConnector(String scmIP, int connectionTimeout) throws IOException {
+        this.scmIP = scmIP;
         socket = new Socket();
-        socket.connect(new InetSocketAddress(SCM_IP, SCM_PORT), connectionTimeout);
+        socket.connect(new InetSocketAddress(scmIP, SCM_PORT), connectionTimeout);
         in = socket.getInputStream();
         out = socket.getOutputStream();
-    }
-
-    public SCMConnector() throws IOException {
-        this(1000);
     }
 
     /**
